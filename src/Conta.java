@@ -8,6 +8,7 @@ public abstract class Conta implements IConta {
 	protected int numero;
 	protected double saldo;
 	protected Cliente cliente;
+	protected boolean realizarOperacao;
 
 	public Conta(Cliente cliente) {
 		this.agencia = Conta.AGENCIA_PADRAO;
@@ -17,8 +18,20 @@ public abstract class Conta implements IConta {
 
 	@Override
 	public void sacar(double valor) {
-		saldo -= valor;
-	}
+		try {
+			if (valor < saldo){
+				saldo -= valor;
+				realizarOperacao = true;
+			}
+			else{
+				realizarOperacao = false;
+				throw new SaldoInsuficienteException();
+			}
+		} catch (Exception e) {
+			System.out.println("Saldo Insuficiente para realizar essa operação");
+			
+		}
+		}
 
 	@Override
 	public void depositar(double valor) {
